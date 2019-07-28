@@ -19,5 +19,10 @@
   ],
   "background": {
     "scripts": ["src/background.js"]
+  },
+  "applications": {
+    "gecko": {
+      "id": "arte-downloader.ralfstx@github.com"
+    }
   }
 }
