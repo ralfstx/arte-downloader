@@ -1,0 +1,7 @@
+{
+  "name": "arte-downloader",
+  "version": "0.1.0",
+  "devDependencies": {
+    "eslint": "^5.16.0"
+  }
+}

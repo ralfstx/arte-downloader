@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+  "name": "Arte Downloader",
+  "version": "0.1.0",
+  "description": "Downloads films from ARTE",
+  "icons": {
+    "48": "icons/arte-48.png"
+  },
+  "permissions": [
+    "*://api.arte.tv/api/*",
+    "webRequest",
+    "downloads"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://www.arte.tv/*/videos/*"],
+      "js": ["src/main.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["src/background.js"]
+  }
+}
