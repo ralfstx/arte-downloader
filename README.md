@@ -2,13 +2,11 @@
 
 ## Install temporarily
 
-Run this command in the plugin directory:
-
 ```
-web-ext run
+npm start
 ```
 
-This opens a new Firefox instance with the add-on installed.
+opens a new Firefox instance with the add-on installed.
 
 ## Install temporarily in running instance
 

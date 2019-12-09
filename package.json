@@ -1,6 +1,12 @@
 {
   "name": "arte-downloader",
   "version": "0.1.0",
+  "scripts": {
+    "start": "web-ext run --start-url www.arte.tv/de"
+  },
+  "dependencies": {
+    "web-ext": "^3.2.1"
+  },
   "devDependencies": {
     "eslint": "^5.16.0"
   }
