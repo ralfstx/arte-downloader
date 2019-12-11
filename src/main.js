@@ -57,7 +57,7 @@ function getMainElement() {
   if (existingElement) {
     return existingElement;
   }
-  const style = 'position: absolute; top: 0; left: 0; background-color: white; color: black; padding: 10px;';
+  const style = 'position: absolute; top: 0; left: 0; background-color: white; color: black; padding: 10px; z-index: 100000';
   const newElement = createElement(`<div id="arte-downloader" style="${style}"><div>`);
   document.body.appendChild(newElement);
   return newElement;
