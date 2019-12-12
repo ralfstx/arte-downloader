@@ -12,7 +12,7 @@ function update() {
 }
 
 async function initializeContent(name, videoId) {
-  appendHeader(name);
+  appendItem(name);
   const data = await getJson(`https://api.arte.tv/api/player/v1/config/de/${videoId}?autostart=1&lifeCycle=1`);
   const vdata = data.videoJsonPlayer;
   const versions = Object.keys(vdata.VSR)
@@ -20,21 +20,17 @@ async function initializeContent(name, videoId) {
     .filter(version => version.mediaType === 'mp4');
   versions.sort(compareVersions);
   for (const version of versions) {
-    appendVersion(name, version);
+    const filename = `${name}.${version.mediaType}`;
+    const text = `${version.versionLibelle} ${version.width}x${version.height} ${version.mediaType}`;
+    appendItem(text, () => download(version.url, filename));
   }
 }
 
-function appendHeader(name) {
-  const element = createElement(`<div><b>${name}</b></div>`);
+function appendItem(text, action) {
+  const t = action ? 'a' : 'span';
+  const element = createElement(`<${t}><div style="padding: 2px 10px;">${text}</div></${t}>`);
+  element.onclick = action;
   document.getElementById('arte-downloader-content').append(element);
-}
-
-function appendVersion(name, version) {
-  const filename = `${name}.${version.mediaType}`;
-  const text = `${version.versionLibelle} ${version.width}x${version.height} ${version.mediaType}`;
-  const link = createElement(`<div><a>${text}</a></div>`);
-  link.onclick = () => download(version.url, filename);
-  document.getElementById('arte-downloader-content').append(link);
 }
 
 function download(url, filename) {
@@ -54,10 +50,10 @@ function initializeMainElement() {
   while (mainElement.firstChild) {
     mainElement.removeChild(mainElement.firstChild);
   }
-  const toggleButton = createElement('<div id="arte-downloader-toggle"><a>…</a></div>');
+  const toggleButton = createElement('<a><div id="arte-downloader-toggle" style="margin: 5px 10px">…</div></a>');
   const contentDiv = createElement('<div id="arte-downloader-content"></div>');
   contentDiv.hidden = true;
-  toggleButton.firstChild.onclick = () => contentDiv.hidden = !contentDiv.hidden;
+  toggleButton.onclick = () => contentDiv.hidden = !contentDiv.hidden;
   mainElement.append(toggleButton, contentDiv);
 }
 
@@ -66,7 +62,7 @@ function getMainElement() {
   if (existingElement) {
     return existingElement;
   }
-  const style = 'position: absolute; top: 0; left: 0; background-color: white; color: black; padding: 10px; z-index: 100000';
+  const style = 'position: absolute; top: 0; left: 0; background-color: white; color: black; z-index: 100000';
   const newElement = createElement(`<div id="arte-downloader" style="${style}"><div>`);
   document.body.appendChild(newElement);
   return newElement;
