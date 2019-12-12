@@ -12,6 +12,7 @@ function update() {
 }
 
 async function initializeContent(name, videoId) {
+  appendHeader(name);
   const data = await getJson(`https://api.arte.tv/api/player/v1/config/de/${videoId}?autostart=1&lifeCycle=1`);
   const vdata = data.videoJsonPlayer;
   const versions = Object.keys(vdata.VSR)
@@ -21,6 +22,11 @@ async function initializeContent(name, videoId) {
   for (const version of versions) {
     appendVersion(name, version);
   }
+}
+
+function appendHeader(name) {
+  const element = createElement(`<div><b>${name}</b></div>`);
+  document.getElementById('arte-downloader-content').append(element);
 }
 
 function appendVersion(name, version) {
@@ -45,6 +51,9 @@ async function getJson(url) {
 
 function initializeMainElement() {
   const mainElement = getMainElement();
+  while (mainElement.firstChild) {
+    mainElement.removeChild(mainElement.firstChild);
+  }
   const toggleButton = createElement('<div id="arte-downloader-toggle"><a>…</a></div>');
   const contentDiv = createElement('<div id="arte-downloader-content"></div>');
   contentDiv.hidden = true;
@@ -88,10 +97,10 @@ function createElement(html) {
 function onUrlChange(fn) {
   function detectChange() {
     if (document.URL !== detectChange.currentUrl) {
-      onUrlChange.currentUrl = document.URL;
+      detectChange.currentUrl = document.URL;
       fn.call();
     }
-    setTimeout(onUrlChange, 1000);
+    setTimeout(detectChange, 1000);
   }
   detectChange();
 }
